@@ -1,0 +1,46 @@
+{
+  "name": "graphql-microservice-demo",
+  "version": "1.0.0",
+  "description": "An Example using Apollo Fedoration",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^16.4.3",
+    "@white-matrix/eslint-config-ts": "^0.0.6",
+    "eslint": "^7.31.0",
+    "eslint-plugin-import": "^2.23.4",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.1.1",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "workspaces": [
+    "gateway",
+    "services/*"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.[jt]s": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhiteMatrixTech/graphql-microservice-demo.git"
+  },
+  "author": "Willin Wang <willin@willin.org> (https://github.com/willin)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/WhiteMatrixTech/graphql-microservice-demo/issues"
+  },
+  "homepage": "https://github.com/WhiteMatrixTech/graphql-microservice-demo#readme"
+}

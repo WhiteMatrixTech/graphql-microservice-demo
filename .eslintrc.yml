@@ -1,0 +1,16 @@
+root: true
+extends:
+  - '@white-matrix/eslint-config-ts'
+rules:
+  camelcase: 0
+  no-shadow: 0
+  max-classes-per-file: 0
+  import/extensions: [0, { ts: 0, js: 2, json: 2 }]
+ignorePatterns:
+  - dist/
+
+overrides:
+  - files: '*.spec.[tj]s'
+    rules:
+      '@typescript-eslint/no-unsafe-call': 0
+      '@typescript-eslint/no-explicit-any': 0

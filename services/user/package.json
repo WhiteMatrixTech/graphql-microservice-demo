@@ -1,0 +1,17 @@
+{
+  "name": "user",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "start": "nodemon",
+    "check": "apollo schema:check",
+    "deploy": "apollo schema:publish"
+  },
+  "keywords": [],
+  "author": "Willin Wang <willin@willin.org> (https://github.com/willin)",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@apollo/federation": "^0.27.0",
+    "apollo-server": "^3.0.2"
+  }
+}
