@@ -1,2 +1,2 @@
 # graphql-microservice-demo
-An Example using Apollo Fedoration
+An Example using Apollo Federation
