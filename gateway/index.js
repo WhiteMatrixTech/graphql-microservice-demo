@@ -1,6 +1,7 @@
 const { ApolloServer } = require('apollo-server-fastify');
 const { ApolloGateway } = require('@apollo/gateway');
 const fastify = require('fastify');
+const jwt = require('fastify-jwt');
 
 const gateway = new ApolloGateway({
   // This entire `serviceList` is optional when running in managed federation
@@ -31,6 +32,20 @@ const gateway = new ApolloGateway({
   });
   const app = fastify();
   await server.start();
+  app.register(jwt, {
+    secret: 'helloworld',
+    sign: {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+      audience: 'viewer',
+      issuer: 'whitematrix.io'
+    },
+    verify: {
+      audience: 'viewer',
+      issuer: 'whitematrix.io'
+    }
+  });
+  app.addHook('onRequest', (request) => request.jwtVerify());
   app.register(server.createHandler({ cors: true }));
 
   app.listen(4000).then((url) => {
