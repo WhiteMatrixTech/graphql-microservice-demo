@@ -1,5 +1,5 @@
 const { ApolloServer } = require('apollo-server-fastify');
-const { ApolloGateway } = require('@apollo/gateway');
+const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
 const fastify = require('fastify');
 const jwt = require('fastify-jwt');
 
@@ -15,7 +15,19 @@ const gateway = new ApolloGateway({
   ],
 
   // Experimental: Enabling this enables the query plan view in Playground.
-  __exposeQueryPlanExperimental: false
+  __exposeQueryPlanExperimental: false,
+
+  buildService({ url }) {
+    return new RemoteGraphQLDataSource({
+      url,
+      willSendRequest({ request, context }) {
+        request.http.headers.set(
+          'user',
+          context.user ? JSON.stringify(context.user) : null
+        );
+      }
+    });
+  }
 });
 
 (async () => {
@@ -28,7 +40,12 @@ const gateway = new ApolloGateway({
     engine: false,
 
     // Subscriptions are unsupported but planned for a future Gateway version.
-    subscriptions: false
+    subscriptions: false,
+
+    context: ({ request }) => {
+      const user = request.user || null;
+      return { user };
+    }
   });
   const app = fastify();
   await server.start();
