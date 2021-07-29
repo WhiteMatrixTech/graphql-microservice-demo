@@ -1,17 +1,23 @@
 const { ApolloServer, gql } = require('apollo-server-fastify');
 const { buildFederatedSchema } = require('@apollo/federation');
+const { applyMiddleware } = require('graphql-middleware');
 const fastify = require('fastify');
+const jwt = require('jsonwebtoken');
+const { permissions } = require('./permissions');
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type User @key(fields: "id") {
     id: ID!
-    firstName: String!
-    lastName: String!
-    address: String
+    username: String!
   }
-  type Query {
+  extend type Query {
     user(id: ID!): User
+    viewer: User!
+  }
+
+  extend type Mutation {
+    login(username: String!, password: String!): String
   }
   # This was originally in the stitched gateway
   extend type Reservation @key(fields: "id") {
@@ -23,14 +29,18 @@ const typeDefs = gql`
 
 const lookupUser = () => ({
   id: 1,
-  firstName: 'Jake',
-  lastName: 'Dawkins',
-  address: 'everywhere'
+  username: 'willin',
+  password: 'willin',
+  roles: ['admin'],
+  permissions: ['read:any_account', 'read:own_account']
 });
 
 const resolvers = {
   Query: {
-    user: () => lookupUser()
+    user: () => lookupUser(),
+    viewer(parent, args, { user }) {
+      return user;
+    }
   },
   User: {
     __resolveReference() {
@@ -44,17 +54,36 @@ const resolvers = {
      * need to lookup a user.
      */
     user: ({ userId }) => lookupUser(userId)
+  },
+  Mutation: {
+    login(parent, { username }) {
+      const { id, permissions: p, roles } = lookupUser();
+      return jwt.sign({ id, username, roles, permissions: p }, 'helloworld', {
+        algorithm: 'HS256',
+        subject: username,
+        expiresIn: '7d',
+        audience: 'viewer',
+        issuer: 'whitematrix.io'
+      });
+    }
   }
 };
 
 (async () => {
   const server = new ApolloServer({
-    schema: buildFederatedSchema([
-      {
-        typeDefs,
-        resolvers
-      }
-    ])
+    schema: applyMiddleware(
+      buildFederatedSchema([
+        {
+          typeDefs,
+          resolvers
+        }
+      ]),
+      permissions
+    ),
+    context: ({ request }) => {
+      const user = request.headers.user ? JSON.parse(request.headers.user) : null;
+      return { user };
+    }
   });
 
   const app = fastify();

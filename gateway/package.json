@@ -13,6 +13,7 @@
     "@apollo/gateway": "^0.34.0",
     "apollo-server-fastify": "^3.0.2",
     "fastify": "^3.19.2",
+    "fastify-jwt": "^3.0.0",
     "graphql": "^15.5.1"
   }
 }
