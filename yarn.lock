@@ -1236,13 +1236,18 @@ eslint-config-airbnb-base@*:
     object.assign "^4.1.2"
     object.entries "^1.1.2"
 
-eslint-config-willin@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/eslint-config-willin/-/eslint-config-willin-1.0.6.tgz#581bd05a155094d38e5eca59b431a4ab1755c9be"
-  integrity sha512-wk+sW3Xj/25mFoKCtg2QTwR3OTR9oMq/Eu8oR8jYBbyxOlze4thy+Gtmj8oNlmtue35eyki21Di0a+/7cMFYKg==
+eslint-config-prettier@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
+  integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+
+eslint-config-willin@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/eslint-config-willin/-/eslint-config-willin-1.0.7.tgz#0fc5b0b1ece6eb9a6098a6617e146a3a024a1eab"
+  integrity sha512-+QECXMVWnjKWfkRa8vznQvzGf7QNpcONBz5Fagp5boUPZnQb/g5BqArTvaTNlzZiJ8Ae7lh50IS1UJhFayLD7Q==
   dependencies:
-    eslint "*"
     eslint-config-airbnb-base "*"
+    eslint-config-prettier "^8.3.0"
     eslint-plugin-import "*"
     v0 "*"
 
@@ -1308,7 +1313,7 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.1.0.tgz#f65328259305927392c938ed44eb0a5c9b2bd303"
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
-eslint@*, eslint@^7.31.0:
+eslint@^7.31.0:
   version "7.31.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.31.0.tgz#f972b539424bf2604907a970860732c5d99d3aca"
   integrity sha512-vafgJpSh2ia8tnTkNUkwxGmnumgckLh5aAbLa1xRmIn9+owi8qBNGKL+B881kNKNTy7FFqTEkpNkUvmw0n6PkA==

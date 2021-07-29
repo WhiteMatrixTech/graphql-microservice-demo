@@ -59,7 +59,11 @@ const gateway = new ApolloGateway({
       issuer: 'whitematrix.io'
     }
   });
-  app.addHook('onRequest', (request) => request.jwtVerify());
+  app.addHook('onRequest', (request) =>
+    request.jwtVerify().catch((e) => {
+      console.error(e);
+    })
+  );
   app.register(server.createHandler({ cors: true }));
 
   app.listen(4000).then((url) => {

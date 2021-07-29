@@ -61,7 +61,9 @@ const resolvers = {
       return jwt.sign({ id, username, roles, permissions: p }, 'helloworld', {
         algorithm: 'HS256',
         subject: username,
-        expiresIn: '7d'
+        expiresIn: '7d',
+        audience: 'viewer',
+        issuer: 'whitematrix.io'
       });
     }
   }
