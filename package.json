@@ -7,15 +7,19 @@
     "start:dev:gateway": "yarn workspace gateway start:dev",
     "start:dev:service:user": "yarn workspace user start:dev",
     "start:dev:service:reservation": "yarn workspace reservation start:dev",
-    "start:dev": "concurrently \"npm:start:dev:service:*\" \"npm:start:dev:gateway\""
+    "start:dev": "concurrently \"npm:start:dev:service:*\" \"npm:start:dev:gateway\"",
+    "test": "DEBUG=gql:* nyc ava -vs"
   },
   "devDependencies": {
+    "ava": "^3.15.0",
     "concurrently": "^6.2.0",
+    "debug": "^4.3.2",
     "eslint": "^7.31.0",
     "eslint-config-willin": "^1.0.7",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.1",
     "nodemon": "^2.0.12",
+    "nyc": "^15.1.0",
     "prettier": "^2.3.2"
   },
   "husky": {
@@ -33,6 +37,30 @@
     "gateway",
     "services/*"
   ],
+  "ava": {
+    "files": [
+      "services/**/*.spec.js",
+      "!**/_*/*.js",
+      "!**/_*.js"
+    ]
+  },
+  "nyc": {
+    "lines": 95,
+    "functions": 90,
+    "branches": 90,
+    "check-coverage": true,
+    "reporter": [
+      "json-summary",
+      "text-summary",
+      "html"
+    ],
+    "report-dir": "./.nyc_output",
+    "exclude": [
+      "**/*.test.js",
+      "**/*.spec.js",
+      "**/test/**/*"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/WhiteMatrixTech/graphql-microservice-demo.git"
