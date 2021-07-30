@@ -1,12 +1,10 @@
-
 demo/
-/swagger-ui*
-globalConfig.json
+DbData
 
 # compiled output
 /api.json
-/dist
-/node_modules
+dist/
+node_modules
 
 # Logs
 logs

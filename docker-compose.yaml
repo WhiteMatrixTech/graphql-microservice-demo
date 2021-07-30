@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  mongodb:
+    ports:
+      - 27017:27017
+    container_name: mongodb-local
+    image: mongo:5
+    networks:
+      - mongodb-net
+    volumes:
+      - ./DBData/mongo:/data/db
+
+networks:
+  mongodb-net:
+    driver: bridge

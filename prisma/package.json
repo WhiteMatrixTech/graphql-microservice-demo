@@ -1,0 +1,14 @@
+{
+  "name": "@dao/prisma",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@prisma/client": "2.26.0",
+    "prisma": "2.26.0"
+  },
+  "scripts": {
+    "build": "prisma generate --schema=./schema.prisma",
+    "postinstall": "npm run build"
+  }
+}
