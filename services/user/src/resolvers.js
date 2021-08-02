@@ -1,15 +1,31 @@
 const jwt = require('jsonwebtoken');
+const { PrismaClient } = require('@dao/prisma');
 
-const lookupUser = () => ({
-  id: 1,
-  username: 'willin',
-  password: 'willin',
-  roles: ['admin'],
-  permissions: ['read:any_account', 'read:own_account']
-});
+const prisma = new PrismaClient();
+
+const lookupUser = async (username, id) => {
+  const result = await prisma.user.findUnique({
+    ...(username === undefined
+      ? {}
+      : {
+          where: {
+            username
+          }
+        }),
+    ...(id === undefined
+      ? {}
+      : {
+          where: {
+            id
+          }
+        })
+  });
+  return result;
+};
 
 const resolvers = {
   Query: {
+    // FIXME: ?
     user: () => lookupUser(),
     viewer(parent, args, { user }) {
       return user;
@@ -17,6 +33,7 @@ const resolvers = {
   },
   User: {
     __resolveReference() {
+      // FIXME: ?
       return lookupUser();
     }
   },
@@ -26,11 +43,14 @@ const resolvers = {
      * a user, but since we're in this service, we can just use whatever we
      * need to lookup a user.
      */
-    user: ({ userId }) => lookupUser(userId)
+    user: ({ userId }) => lookupUser(undefined, userId)
   },
   Mutation: {
-    login(parent, { username }) {
-      const { id, permissions: p, roles } = lookupUser();
+    async login(parent, { username, password }) {
+      const { id, permissions: p, roles, password: pwd } = await lookupUser(username);
+      if (password !== pwd) {
+        return new Error('INVALID USER');
+      }
       return jwt.sign({ id, username, roles, permissions: p }, 'helloworld', {
         algorithm: 'HS256',
         subject: username,
