@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@dao/prisma');
+const { PrismaClient } = require('.');
 
 const prisma = new PrismaClient();
 
@@ -15,6 +15,13 @@ async function main() {
     })
     .then((res) => {
       console.log(res);
+      return prisma.reservation
+        .create({
+          data: { reservationDate: 'today', status: 'good', userId: res.id }
+        })
+        .then((resp) => {
+          console.log(resp);
+        });
     });
 }
 

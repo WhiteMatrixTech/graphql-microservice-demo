@@ -9,13 +9,23 @@ datasource db {
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["mongoDb"]
-  output   = "./dist"
+  output          = "./dist"
 }
 
 model User {
-  id            String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  username      String  @unique
-  password      String
-  roles         String[]
-  permissions   String[]
+  id          String        @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  username    String        @unique
+  password    String
+  roles       String[]
+  permissions String[]
+  Reservation Reservation[]
+
+}
+
+model Reservation {
+  id              String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  reservationDate String
+  status          String
+  userId          String @db.ObjectId
+  creator         User   @relation(fields: [userId], references: [id])
 }

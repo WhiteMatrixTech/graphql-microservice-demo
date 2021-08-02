@@ -9,6 +9,7 @@
   "author": "Willin Wang <willin@willin.org> (https://github.com/willin)",
   "license": "Apache-2.0",
   "dependencies": {
+    "@dao/prisma": "0.0.0",
     "@apollo/federation": "^0.27.0",
     "apollo-server-fastify": "^3.0.2",
     "fastify": "^3.19.2"
