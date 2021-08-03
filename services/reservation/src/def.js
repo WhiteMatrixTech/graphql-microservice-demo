@@ -8,12 +8,32 @@ module.exports = gql`
     reservationDate: String!
     status: String
   }
+  type Node {
+    id: String
+    item: Item
+  }
+  type Edges {
+    cursor: String
+    node: Node
+  }
+  type PageInfo {
+    startCursor: String
+    endCursor: String
+    hasPreviousPage: Boolean
+    hasNextPage: Boolean
+  }
+  type Pagination {
+    edges: [Edges]
+    totalCount: Int
+    pageInfo: PageInfo
+  }
   type Query {
-    reservations: [Reservation]!
+    reservations(first: String, after: String): Pagination
     reservation(id: ID!): Reservation
   }
   extend type User @key(fields: "id") {
     id: ID! @external
     reservations: [Reservation]
   }
+  union Item = User | Reservation
 `;

@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@dao/prisma');
+const { pageResolver } = require('./pagination');
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,7 @@ const lookupReservation = async (id) => {
 
 const resolvers = {
   Query: {
-    reservations: () => [lookupReservation(), lookupReservation()],
+    reservations: () => async (parent, args) => pageResolver(parent, args, prisma.reservation),
     reservation: () => lookupReservation()
   },
   User: {
