@@ -2,7 +2,6 @@ const { ApolloServer } = require('apollo-server-fastify');
 const { buildFederatedSchema } = require('@apollo/federation');
 const { applyMiddleware } = require('graphql-middleware');
 const { PrismaClient } = require('@dao/prisma');
-const { permissions } = require('@graphql/common');
 const { typeDefs } = require('./typedefs');
 const { resolvers } = require('./resolvers');
 
@@ -12,8 +11,7 @@ const server = new ApolloServer({
     buildFederatedSchema({
       typeDefs,
       resolvers
-    }),
-    permissions
+    })
   ),
   context: ({ request }) => {
     const user = request.headers.user ? JSON.parse(request.headers.user) : null;
