@@ -5,8 +5,8 @@ globalConfig.json
 
 # compiled output
 /api.json
-/dist
-/node_modules
+*/dist
+node_modules
 
 # Logs
 logs
@@ -48,3 +48,5 @@ data
 
 # env
 .env
+
+package-lock.json

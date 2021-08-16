@@ -2,6 +2,7 @@ const { ApolloServer } = require('apollo-server-fastify');
 const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
 const fastify = require('fastify');
 const jwt = require('fastify-jwt');
+const fetch = require('node-fetch');
 
 const gateway = new ApolloGateway({
   // This entire `serviceList` is optional when running in managed federation
@@ -20,6 +21,17 @@ const gateway = new ApolloGateway({
   buildService({ url }) {
     return new RemoteGraphQLDataSource({
       url,
+      // 对各个服务发起的请求超时时间为3秒
+      fetcher: (input, init) => {
+        if (init) {
+          // eslint-disable-next-line no-param-reassign
+          init.timeout = 3000;
+        } else {
+          // eslint-disable-next-line no-param-reassign
+          init = { timeout: 3000 };
+        }
+        return fetch(input, init);
+      },
       willSendRequest({ request, context }) {
         request.http.headers.set('user', context.user ? JSON.stringify(context.user) : null);
       }
@@ -42,6 +54,13 @@ const gateway = new ApolloGateway({
     context: ({ request }) => {
       const user = request.user || null;
       return { user };
+    },
+    formatError: (err) => {
+      // Don't give the specific errors to the client.
+      if (err.message.startsWith('Database Error: ')) {
+        return new Error('Internal server error');
+      }
+      return err;
     }
   });
   const app = fastify();
